@@ -12,6 +12,7 @@ In this small project, I will try to take advantage of the main problem in this 
  - [ ] Provide a cleaned up, working version of the weak, memetic code
  - [ ] Pwn the password generator by trying to guess the seed for the PRF and then computing the password
  - [ ] Provide a proof of concept interface for guessing the password and logging into a basic Ubuntu VM.
+ - [ ] Rewrite the original meme code to be more secure against this kind of attack.
  - [x] Try to justify why, using open source research on accounts, one may be able to guess the random seed state.
  
 # Regarding that last point:
