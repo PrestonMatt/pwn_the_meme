@@ -65,9 +65,9 @@ class DateRangeDialog:
         end_date_str = self.end_date.get()
 
         try:
-            start_date = datetime.strptime(start_date_str, "%Y-%m-%d-%H-%M").date()
-            end_date = datetime.strptime(end_date_str, "%Y-%m-%d-%H-%M").date()
-            unix_epoch = datetime.strptime("1970-01-01-00-00","%Y-%m-%d-%H-%M").date()
+            start_date = datetime.strptime(start_date_str, "%Y-%m-%d-%H-%M-%S").date()
+            end_date = datetime.strptime(end_date_str, "%Y-%m-%d-%H-%M-%S").date()
+            unix_epoch = datetime.strptime("1970-01-01-00-00","%Y-%m-%d-%H-%M-%S").date()
             if end_date < start_date:
                 messagebox.showerror("Error", "End date cannot be before start date.")
                 
@@ -77,25 +77,46 @@ class DateRangeDialog:
                 messagebox.showinfo("Date Range", "You entered the date range %s to %s." % (start_date,end_date) )
                 password_guesser(start_date_str,end_date_str)
         except ValueError:
-            messagebox.showerror("Error", "Invalid date format. Please enter dates in YYYY-MM-DD-HH-MM format.")
+            messagebox.showerror("Error", "Invalid date format. Please enter dates in YYYY-MM-DD-HH-mm-SS format.")
 
 def password_guesser(start_date_str,end_date_str):
 
     acceptable_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*\/?"
 
     guesses = []
-    start_date = datetime.strptime(start_date_str, "%Y-%m-%d-%H-%M").time()
-    end_date = datetime.strptime(end_date_str, "%Y-%m-%d-%H-%M").time()
+    
+    #translate the start date to unix time for the seed:
+    start_date_ints = [int(s) for s in start_date_str.split("-")]
+    start_date_time = datetime(year = start_date_ints[0],
+    				month = start_date_ints[1],
+    				day = start_date_ints[2],
+    				hour = start_date_ints[3],
+    				minute = start_date_ints[4],
+    				second = start_date_ints[5])
+    start_date_seed = time.mktime( start_date_time.timetule() )
+    
+    #translate the end date to unix time for the seed:
+    end_date_ints = [int(e) for e in end_date_str.split("-")]
+    end_date_time = datetime(year = end_date_ints[0],
+    				month = end_date_ints[1],
+    				day = end_date_ints[2],
+    				hour = end_date_ints[3],
+    				minute = end_date_ints[4],
+    				second = end_date_ints[5])
+    end_date_seed = time.mktime( end_date_time.timetule() )
+    
+    #start_date = datetime.strptime(start_date_str, "%Y-%m-%d-%H-%M-%S").time()
+    #end_date = datetime.strptime(end_date_str, "%Y-%m-%d-%H-%M-%S").time()
 
-    #TODO fix this so that it doesn't just see it as 00:00:00
-    print("Starting seed: %s" % start_date)
-    print("Ending seed: %s" % end_date)
+    #TODO fix this so that it doesn't just see it as 00:00:00 - FIXED
+    print("Starting date %s for starting seed: %d" % (start_date_time, start_date_seed))
+    print("Ending date %s for ending seed: %d" % (end_date_time, end_date_seed))
 
-    #TODO Fix this iteration loop to work with the date range
-    for system_times in range(start_date,end_date):
+    #TODO Fix this iteration loop to work with the date range - FIXED
+    for rand_seed in range(start_date_seed,end_date_seed):
         print("Generating potential password for seed of date: %s" % system_times)
         password = "".join(random.sample(acceptable_characters,
-                                         8).seed(a=system_times))
+                                         8).seed(a=rand_seed))
         guesses.append(password)
 
 if __name__ == "__main__":
