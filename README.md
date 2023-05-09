@@ -9,7 +9,7 @@ This is a fun, little, toy project that "pwns" the poor code seen in the followi
 
 # Overview:
 In this small project, I will try to take advantage of the main problem in this code which is that the psuedo-random function (PRF) and its seed are potentially compromised. My goals are to:
- - [ ] Provide a cleaned up, working version of the weak, memetic code
+ - [x] Provide a cleaned up, working version of the weak, memetic code
  - [ ] Pwn the password generator by trying to guess the seed for the PRF and then computing the password
  - [ ] Provide a proof of concept interface for guessing the password and logging into a basic Ubuntu VM.
  - [ ] Rewrite the original meme code to be more secure against this kind of attack.
